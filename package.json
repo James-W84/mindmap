@@ -1,0 +1,23 @@
+{
+  "name": "mindmap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "web"
+  ],
+  "scripts": {
+    "test": "test",
+    "dev": "npm run dev --workspaces"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/James-W84/mindmap.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/James-W84/mindmap/issues"
+  },
+  "homepage": "https://github.com/James-W84/mindmap#readme"
+}
