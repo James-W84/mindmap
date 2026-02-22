@@ -1,141 +1,477 @@
 .page {
-  --background: #fafafa;
-  --foreground: #fff;
-
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
-  display: flex;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
+  background: #f7f7f5;
   font-family: var(--font-geist-sans);
-  background-color: var(--background);
-}
-
-.main {
-  display: flex;
   min-height: 100vh;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+  padding: 12px;
 }
 
-.intro {
+.workspace {
+  background: #f1f1ef;
+  border: 1px solid #d9d9d6;
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: calc(100vh - 32px);
+  position: relative;
+}
+
+.canvasPane {
+  padding: 22px;
+  position: relative;
+}
+
+.controls {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
+  gap: 10px;
+  left: 22px;
+  position: absolute;
+  top: 22px;
+  z-index: 3;
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
+.controlButton {
+  background: #ffffff;
+  border: 1px solid #d4d4d1;
+  border-radius: 999px;
+  color: #1f1f1d;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 1;
+  min-width: 122px;
+  padding: 9px 14px;
+}
+
+.controlButton:hover {
+  background: #2a2a27;
+  border-color: #2a2a27;
+  color: #ffffff;
+}
+
+.canvasArea {
+  display: grid;
+  min-height: calc(100vh - 88px);
+  place-items: center;
+  position: relative;
+}
+
+.shortcutsCard {
+  background: rgb(255 255 255 / 94%);
+  border: 1px solid #d4d4d1;
+  border-radius: 10px;
+  bottom: 12px;
+  left: 12px;
+  padding: 10px 12px;
+  position: absolute;
+  width: 210px;
+}
+
+.shortcutsCard h3 {
+  color: #1f1f1d;
+  font-size: 12px;
   font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+  margin: 0 0 8px;
 }
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
-}
-
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.ctas {
+.shortcutsCard ul {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.ctas a {
+.shortcutsCard li {
+  align-items: center;
+  color: #40403d;
+  display: flex;
+  font-size: 11px;
+  gap: 6px;
+}
+
+.shortcutsCard li span {
+  flex: 1;
+}
+
+.shortcutsCard kbd {
+  background: #fff;
+  border: 1px solid #d4d4d1;
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  color: #2a2a27;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+.nodeLayer {
+  height: min(84vh, 700px);
+  position: relative;
+  width: min(100%, 820px);
+}
+
+.zoomIn {
+  animation: zoomInTransition 260ms ease-out;
+}
+
+.zoomOut {
+  animation: zoomOutTransition 240ms ease-out;
+}
+
+.steady {
+  animation: steadyTransition 200ms ease-out;
+}
+
+.currentNode {
+  appearance: none;
+  aspect-ratio: 1 / 1;
+  background: #ffffff;
+  border: 1.5px solid #3a3a37;
+  border-radius: 9999px;
+  color: #1f1f1d;
+  cursor: pointer;
+  height: 340px;
+  left: 50%;
+  overflow: hidden;
+  padding: 26px 30px;
+  position: absolute;
+  text-align: left;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+  z-index: 2;
+}
+
+.currentNode h1 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.currentNode p {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  font-size: 14px;
+  height: 220px;
+  -webkit-line-clamp: 10;
+  line-height: 1.56;
+  margin: 0;
+  max-height: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.childNode {
+  appearance: none;
+  aspect-ratio: 1 / 1;
+  background: #ffffff;
+  border: 1px solid #3a3a37;
+  border-radius: 9999px;
+  color: #1f1f1d;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  height: 96px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 96px;
+  z-index: 2;
+}
+
+.childNode:hover {
+  background: #1f1f1d;
+  color: #ffffff;
+}
+
+.connector {
+  background: #7f7f7b;
+  height: 1.5px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform-origin: 0 50%;
+  z-index: 1;
+}
+
+.sidePanel {
+  align-items: flex-start;
+  background: #f1f1ef;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  padding: 24px 24px 24px 8px;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
+.panelCard {
+  background: #ffffff;
+  border: 1px solid #d4d4d1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 76vh;
+  overflow: auto;
+  padding: 28px 24px;
+  width: min(100%, 520px);
+}
+
+.panelCard h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+  text-align: left;
+}
+
+.panelCard p {
+  color: #2f2f2d;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.fieldLabel {
+  color: #70706c;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.textInput,
+.textArea {
+  background: #fff;
+  border: 1px solid #cdcdca;
+  border-radius: 4px;
+  color: #1f1f1d;
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.textInput:focus,
+.textArea:focus {
+  outline: 2px solid #1f1f1d;
+  outline-offset: 0;
+}
+
+.textArea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.panelActions,
+.deleteRow {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+.panelButton,
+.panelButtonSecondary,
+.deleteButton,
+.deleteButtonConfirm {
+  border: 1px solid #cdcdca;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 450;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  padding: 8px 11px;
+  text-transform: none;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
+.panelButton {
+  background: #1f1f1d;
+  border-color: #1f1f1d;
+  color: #fff;
+}
 
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
+.panelButtonSecondary {
+  background: #ffffff;
+  color: #1f1f1d;
+}
+
+.deleteButton {
+  background: #ffffff;
+  color: #1f1f1d;
+}
+
+.deleteButtonConfirm {
+  background: #1f1f1d;
+  border-color: #1f1f1d;
+  color: #fff;
+}
+
+.panelButtonSecondary:hover,
+.deleteButton:hover {
+  background: #f2f2ef;
+}
+
+.loadingOverlay {
+  background: rgb(241 241 239 / 55%);
+  display: grid;
+  font-size: 18px;
+  font-weight: 600;
+  inset: 0;
+  place-items: center;
+  position: absolute;
+  z-index: 5;
+}
+
+@media (min-width: 1080px) {
+  .workspace {
+    grid-template-columns: 1fr 560px;
   }
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
+@media (max-width: 1200px) {
+  .currentNode {
+    height: 290px;
+    padding: 22px;
+    width: 290px;
   }
 
-  .intro {
-    gap: 16px;
+  .currentNode h1 {
+    font-size: 22px;
   }
 
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
+  .currentNode p {
+    font-size: 13px;
+    -webkit-line-clamp: 10;
+  }
+
+  .childNode {
+    font-size: 13px;
+    height: 86px;
+    width: 86px;
+  }
+
+  .panelCard h2 {
+    font-size: 24px;
+  }
+
+  .panelCard p,
+  .textInput,
+  .textArea {
+    font-size: 14px;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
-
+@media (max-width: 800px) {
   .page {
-    --background: #000;
-    --foreground: #000;
+    padding: 10px;
+  }
 
-    --text-primary: #ededed;
-    --text-secondary: #999;
+  .canvasPane {
+    padding: 14px;
+  }
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
+  .controls {
+    left: 14px;
+    top: 14px;
+  }
+
+  .canvasArea {
+    min-height: 72vh;
+  }
+
+  .nodeLayer {
+    height: 560px;
+  }
+
+  .currentNode {
+    height: 250px;
+    padding: 18px;
+    width: 250px;
+  }
+
+  .currentNode h1 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .currentNode p {
+    font-size: 12px;
+    -webkit-line-clamp: 8;
+  }
+
+  .childNode {
+    font-size: 12px;
+    height: 74px;
+    width: 74px;
+  }
+
+  .sidePanel {
+    padding: 0 14px 14px;
+  }
+
+  .panelCard {
+    max-height: 56vh;
+    padding: 18px;
+  }
+
+  .panelCard h2 {
+    font-size: 20px;
+  }
+
+  .panelCard p,
+  .textInput,
+  .textArea,
+  .fieldLabel {
+    font-size: 18px;
+  }
+
+  .shortcutsCard {
+    bottom: 8px;
+    left: 8px;
+    padding: 8px 10px;
+    width: 180px;
+  }
+
+  .shortcutsCard h3 {
+    font-size: 11px;
+  }
+
+  .shortcutsCard li {
+    font-size: 10px;
+  }
+}
+
+@keyframes zoomInTransition {
+  from {
+    opacity: 0.88;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomOutTransition {
+  from {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes steadyTransition {
+  from {
+    opacity: 0.92;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
